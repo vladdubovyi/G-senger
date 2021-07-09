@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using G_senger.Models;
 
 namespace G_senger.Data
 {
-    interface IServerRepository
+    public interface IServerRepository
     {
-        Task<bool> Login();
+        bool Login(User user);
 
-        Task<User> GetUserById(Guid id);
+        Task<User> GetUserByIdAsync(int id);
 
-        void CreateUser(User user);
+        void CreateUser(User user); // Make it bool
 
-        Task UpdateUser(Guid id);
-        Task DeleteUser(Guid id);
+        Task UpdateUserAsync(User user);
+        Task DeleteUserAsync(User user);
+        Task<bool> SaveChangesAsync();
 
     }
 }

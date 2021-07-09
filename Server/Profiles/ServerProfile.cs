@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using G_senger.Dtos;
 using G_senger.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace G_senger.Profiles
 {
@@ -14,6 +10,11 @@ namespace G_senger.Profiles
         {
             // source -> target
             CreateMap<User, UserCreateDto>();
+            CreateMap<UserCreateDto, User>();
+            CreateMap<UserReadDto, User>();
+            CreateMap<User, UserReadDto>();
+            CreateMap<UserLoginDto, User>();
+            CreateMap<User, UserLoginDto>();
         }
     }
 }

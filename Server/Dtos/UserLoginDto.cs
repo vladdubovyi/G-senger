@@ -2,7 +2,7 @@
 
 namespace G_senger.Dtos
 {
-    public class UserCreateDto
+    public class UserLoginDto
     {
         [Required]
         [MaxLength(256)]
