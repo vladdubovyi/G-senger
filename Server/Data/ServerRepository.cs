@@ -23,7 +23,7 @@ namespace G_senger.Data
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return (_context.Users.Where(u => u.Email == user.Email && u.Password == user.Password) != null);
+            return (_context.Users.Where(u => u.Email == user.Email && u.Password == user.Password).ToArray().Length > 0);
         }
 
         public async Task<User> GetUserByIdAsync(int id)

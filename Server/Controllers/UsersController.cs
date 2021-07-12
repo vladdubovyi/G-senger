@@ -65,7 +65,7 @@ namespace G_senger.Controllers
                 return Ok();
             }
 
-            return Forbid();
+            return NotFound();
         }
     }
 }
