@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -67,7 +59,7 @@ namespace DesktopApp
             using (var client = new HttpClient())
             {
                 var response = await client.PostAsync(
-                    "http://localhost",
+                    "http://localhost:60208/api/Users/Login",
                      new StringContent(JsonString, Encoding.UTF8, "application/json"));
                 return response.StatusCode == HttpStatusCode.OK;
             }

@@ -31,15 +31,19 @@ namespace G_senger.Data
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public void CreateUser(User user) // Make user uniqueness check
+        public bool CreateUser(User user) // Make user uniqueness check
         {
             if(user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
+            if(_context.Users.Where(u => u.Email == user.Email).ToArray().Length > 0)
+            {
+                return false;
+            }
 
             _context.Add(user);
-
+            return true;
         }
 
         public async Task UpdateUserAsync(User user)

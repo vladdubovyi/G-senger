@@ -9,7 +9,7 @@ namespace G_senger.Data
 
         Task<User> GetUserByIdAsync(int id);
 
-        void CreateUser(User user); // Make it bool
+        bool CreateUser(User user); // Make it bool
 
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);

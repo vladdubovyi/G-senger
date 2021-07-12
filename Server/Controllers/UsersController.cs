@@ -41,16 +41,19 @@ namespace G_senger.Controllers
         {
             var userModel = _mapper.Map<User>(userCreateDto);
 
-            _repository.CreateUser(userModel);
+            if (_repository.CreateUser(userModel))
+            {
 
-            await _repository.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
 
-            var userReadDto = _mapper.Map<UserReadDto>(userModel);
+                var userReadDto = _mapper.Map<UserReadDto>(userModel);
 
-            return CreatedAtRoute(
-                nameof(GetUserById),
-                new { Id = userReadDto.Id },
-                userModel);
+                return CreatedAtRoute(
+                    nameof(GetUserById),
+                    new { Id = userReadDto.Id },
+                    userModel);
+            }
+            return StatusCode(403); // Forbidden
         }
 
         // Login    Post api/User/Login
