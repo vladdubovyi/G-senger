@@ -15,5 +15,7 @@ namespace G_senger.Data
         Task DeleteUserAsync(User user);
         Task<bool> SaveChangesAsync();
 
+        Task<string> SendMail(string email);
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -44,7 +45,7 @@ namespace DesktopApp
             }
 
             // Mail code validation
-            await SendMail(textBoxEmail.Text);
+            _regCode = await SendMail(textBoxEmail.Text);
 
             if (new mailCodeCheck(_regCode).ShowDialog() != DialogResult.OK)
             {
@@ -84,32 +85,18 @@ namespace DesktopApp
             }
         }
 
-        private async Task SendMail(string email)
+
+        private async Task<string> SendMail(string email)
         {
-            _regCode = GenerateCode();
-
-            MailAddress from = new MailAddress("vovkamorkovka435@gmail.com", "G-senger");
-            MailAddress to = new MailAddress(email);
-
-            MailMessage message = new MailMessage(from, to);
-
-            message.Subject = "User registration";
-            message.Body = $"<h2>Welcome to G-senger! We are glad to see you :) Your code is: {_regCode}<h2>";
-            message.IsBodyHtml = true;
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("vovkamorkovka435@gmail.com", "");
-            smtp.EnableSsl = true;
-            await smtp.SendMailAsync(message);
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(
+                    $"http://localhost:60208/api/Users/Register/{email}");
+                
+                return await response.Content.ReadAsStringAsync();
+            }
         }
 
-        private string GenerateCode()
-        {
-            string symbs = "1234567890qwertyuiopasdjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM<>?{}:";
-
-            return new string(Enumerable.Repeat(symbs, 8)
-                  .Select(s => s[new Random().Next(s.Length)]).ToArray());
-        }
 
         private void registerForm_FormClosing(object sender, FormClosingEventArgs e)
         {

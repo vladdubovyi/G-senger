@@ -70,5 +70,13 @@ namespace G_senger.Controllers
 
             return NotFound();
         }
+
+        // Send email   GET api/Users/Register/{email}
+        [HttpGet]
+        [Route("Register/{email}")]
+        public async Task<IActionResult> SendMail(string email)
+        {
+            return Ok(await _repository.SendMail(email));
+        }
     }
 }
