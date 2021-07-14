@@ -78,6 +78,7 @@ namespace DesktopApp
                                 "','lastName':'" + lastName + "'}";
             using (var client = new HttpClient())
             {
+                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "Your Oauth token");
                 var response = await client.PostAsync(
                     "http://localhost:60208/api/Users",
                      new StringContent(JsonString, Encoding.UTF8, "application/json"));

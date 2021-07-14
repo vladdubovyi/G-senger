@@ -6,6 +6,7 @@ namespace G_senger.Dtos
     {
         [Required]
         [MaxLength(256)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
