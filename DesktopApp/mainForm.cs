@@ -12,11 +12,14 @@ using System.Windows.Forms;
 
 namespace DesktopApp
 {
+    //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "Your Oauth token");
     public partial class mainForm : Form
     {
-        public mainForm()
+        private readonly string _token;
+        public mainForm(string token)
         {
             InitializeComponent();
+            _token = token;
         }
 
         private void mainForm_Load(object sender, EventArgs e)

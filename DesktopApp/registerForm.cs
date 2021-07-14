@@ -78,11 +78,10 @@ namespace DesktopApp
                                 "','lastName':'" + lastName + "'}";
             using (var client = new HttpClient())
             {
-                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "Your Oauth token");
                 var response = await client.PostAsync(
-                    "http://localhost:60208/api/Users",
+                    "http://localhost:60208/api/Auth/Register",
                      new StringContent(JsonString, Encoding.UTF8, "application/json"));
-                return response.StatusCode == HttpStatusCode.Created;
+                return response.StatusCode == HttpStatusCode.OK;
             }
         }
 
@@ -92,7 +91,7 @@ namespace DesktopApp
             using (var client = new HttpClient())
             {
                 var response = await client.GetAsync(
-                    $"http://localhost:60208/api/Users/Register/{email}");
+                    $"http://localhost:60208/api/Auth/Register/{email}");
                 
                 return await response.Content.ReadAsStringAsync();
             }

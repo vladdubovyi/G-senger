@@ -41,8 +41,10 @@ namespace DesktopApp
             }
 
             // Trying to login to account
-            if ( await TryLogin(textBoxEmail.Text, textBoxPass.Text) ) {
-                new mainForm().Show();
+            var token = await TryLogin(textBoxEmail.Text, textBoxPass.Text);
+
+            if (token != null) {
+                new mainForm(token).Show();
                 this.Hide();
             }
             else
@@ -53,15 +55,20 @@ namespace DesktopApp
   
         }
 
-        private async Task<bool> TryLogin(string userEmail, string userPass)
+        private async Task<string> TryLogin(string userEmail, string userPass)
         {
             string JsonString = "{'email':'" + userEmail + "','password':'" + userPass + "'}";
             using (var client = new HttpClient())
             {
                 var response = await client.PostAsync(
-                    "http://localhost:60208/api/Users/Login",
+                    "http://localhost:60208/api/Auth/Login",
                      new StringContent(JsonString, Encoding.UTF8, "application/json"));
-                return response.StatusCode == HttpStatusCode.OK;
+                if ( response.StatusCode == HttpStatusCode.OK )
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+
+                return null;
             }
 
         }

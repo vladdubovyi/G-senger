@@ -33,7 +33,7 @@ namespace G_senger.Data
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public bool CreateUser(User user) // Make user uniqueness check
+        public bool CreateUser(User user)
         {
             if(user == null)
             {

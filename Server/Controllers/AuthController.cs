@@ -33,87 +33,52 @@ namespace G_senger.Controllers
             _jwtConfig = optionsMonitor.CurrentValue;
         }
 
+        // POST     api/Auth/Register
         [HttpPost]
         [Route("Register")]
-        public IActionResult Register([FromBody] UserCreateDto userRegisterDto)
+        public async Task<IActionResult> Register([FromBody] UserCreateDto userRegisterDto)
         {
-            if (ModelState.IsValid)
+            var userModel = _mapper.Map<User>(userRegisterDto);
+            if (_repository.CreateUser(userModel))
             {
-                var user = _mapper.Map<User>(userRegisterDto);
+                await _repository.SaveChangesAsync();
 
-                var isCreated = _repository.CreateUser(user);
-
-                var identityUser = new IdentityUser() { Email = user.Email };
-
-                if (isCreated)
-                {
-                    var jwtToken = GenerateJwtToken(identityUser);
-
-                    return Ok(new AuthResponse()
-                    {
-                        Success = true,
-                        Token = jwtToken
-                    });
-                }
-                else
-                {
-                    return BadRequest(new AuthResponse()
-                    {
-                        Success = false
-                    });
-                }
+                return Ok();
             }
 
-            return BadRequest(new AuthResponse
-            {
-                Errors = new List<string>()
-                {
-                    "Invalid payload!"
-                },
-                Success = false
-            });
+            return StatusCode(403); // Forbidden
+
         }
 
+        // POST     api/Auth/Login
         [HttpPost]
         [Route("Login")]
         public IActionResult Login([FromBody] UserLoginDto userLoginDto)
         {
-            if (ModelState.IsValid)
-            {
-                var user = _mapper.Map<User>(userLoginDto);
-                var isSucced = _repository.Login(user);
+            var userModel = _mapper.Map<User>(userLoginDto);
+            var isSucced = _repository.Login(userModel);
 
-                if (!isSucced)
+            if (!isSucced)
+            {
+                return BadRequest(new AuthResponse()
                 {
-                    return BadRequest(new AuthResponse()
-                    {
-                        Errors = new List<string>() {
+                    Errors = new List<string>() {
                                 "Invalid login request"
                             },
-                        Success = false
-                    });
-                }
-
-                var identityUser = new IdentityUser() { Email = user.Email };
-
-                var jwtToken = GenerateJwtToken(identityUser);
-
-                return Ok(new AuthResponse()
-                {
-                    Success = true,
-                    Token = jwtToken
+                    Success = false
                 });
             }
 
-            return BadRequest(new AuthResponse()
+            var identityUser = new IdentityUser() { Email = userModel.Email };
+
+            var jwtToken = GenerateJwtToken(identityUser);
+
+            return Ok(new AuthResponse()
             {
-                Errors = new List<string>() {
-                        "Invalid payload"
-                    },
-                Success = false
+                Success = true,
+                Token = jwtToken
             });
         }
-
 
         private string GenerateJwtToken(IdentityUser user)
         {
@@ -138,6 +103,14 @@ namespace G_senger.Controllers
             var jwtToken = jwtTokenHandler.WriteToken(token);
 
             return jwtToken;
+        }
+
+        // Send email   GET api/Auth/Register/{email}
+        [HttpGet]
+        [Route("Register/{email}")]
+        public async Task<IActionResult> SendMail(string email)
+        {
+            return Ok(await _repository.SendMail(email));
         }
     }
 }

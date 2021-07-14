@@ -46,7 +46,6 @@ namespace G_senger.Controllers
 
             if (_repository.CreateUser(userModel))
             {
-
                 await _repository.SaveChangesAsync();
 
                 var userReadDto = _mapper.Map<UserReadDto>(userModel);
@@ -57,29 +56,6 @@ namespace G_senger.Controllers
                     userModel);
             }
             return StatusCode(403); // Forbidden
-        }
-
-        // Login    Post api/User/Login
-        [HttpPost]
-        [Route("Login")]
-        public IActionResult Login(UserLoginDto userLoginDto)
-        {
-            var userModel = _mapper.Map<User>(userLoginDto);
-
-            if(_repository.Login(userModel))
-            {
-                return Ok();
-            }
-
-            return NotFound();
-        }
-
-        // Send email   GET api/Users/Register/{email}
-        [HttpGet]
-        [Route("Register/{email}")]
-        public async Task<IActionResult> SendMail(string email)
-        {
-            return Ok(await _repository.SendMail(email));
         }
     }
 }
