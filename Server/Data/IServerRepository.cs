@@ -5,17 +5,13 @@ namespace G_senger.Data
 {
     public interface IServerRepository
     {
-        bool Login(User user);
-
         Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByEmailAsync(string email);
 
-        bool CreateUser(User user); // Make it bool
+        bool CreateUser(User user);
 
-        Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(User user);
+        //Task UpdateUserAsync(User user);
+        //Task DeleteUserAsync(User user);
         Task<bool> SaveChangesAsync();
-
-        Task<string> SendMail(string email);
-
     }
 }

@@ -25,17 +25,19 @@ namespace G_senger.Controllers
         }
 
         // Get user by Id   GET api/Users/{id}
-        [HttpGet("{id}", Name = "GetUserById")]
+        [HttpGet("test/{id:int}", Name = "GetUserById")]
         public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _repository.GetUserByIdAsync(id);
 
-            if(user == null)
+            var userGetDto = _mapper.Map<UserGetDto>(user);
+
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(userGetDto);
         }
 
         // User creation   POST api/Users
@@ -56,6 +58,22 @@ namespace G_senger.Controllers
                     userModel);
             }
             return StatusCode(403); // Forbidden
+        }
+
+        // Getting user by Email    GET      api/Users/{email}
+        [HttpGet("{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var user = await _repository.GetUserByEmailAsync(email);
+
+            var userGetDto = _mapper.Map<UserGetDto>(user);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(userGetDto);
         }
     }
 }

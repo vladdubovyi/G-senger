@@ -18,19 +18,14 @@ namespace G_senger.Data
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public bool Login(User user)
-        {
-            if(user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return (_context.Users.Where(u => u.Email == user.Email && u.Password == user.Password).ToArray().Length > 0);
-        }
-
         public async Task<User> GetUserByIdAsync(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public bool CreateUser(User user)
@@ -39,7 +34,7 @@ namespace G_senger.Data
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            if(_context.Users.Where(u => u.Email == user.Email).ToArray().Length > 0)
+            if(_context.Users.Where(u => u.Email.ToLower() == user.Email.ToLower()).ToArray().Length > 0)
             {
                 return false;
             }
@@ -48,48 +43,19 @@ namespace G_senger.Data
             return true;
         }
 
-        public async Task UpdateUserAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task DeleteUserAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
 
-        public async Task<string> SendMail(string email)
-        {
-            string _regCode = GenerateCode();
+        //public async Task UpdateUserAsync(User user)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-            MailAddress from = new MailAddress("vovkamorkovka435@gmail.com", "G-senger");
-            MailAddress to = new MailAddress(email);
-
-            MailMessage message = new MailMessage(from, to);
-
-            message.Subject = "User registration";
-            message.Body = $"<h2>Welcome to G-senger! We are glad to see you :) Your code is: {_regCode}<h2>";
-            message.IsBodyHtml = true;
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("vovkamorkovka435@gmail.com", "");
-            smtp.EnableSsl = true;
-            await smtp.SendMailAsync(message);
-
-            return _regCode;
-        }
-
-        private string GenerateCode()
-        {
-            string symbs = "1234567890qwertyuiopasdjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM<>?{}:";
-
-            return new string(Enumerable.Repeat(symbs, 8)
-                  .Select(s => s[new Random().Next(s.Length)]).ToArray());
-        }
+        //public async Task DeleteUserAsync(User user)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

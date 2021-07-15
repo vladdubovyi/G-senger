@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace G_senger.Dtos
+namespace DesktopApp.Dtos
 {
-    public class UserLoginDto
+    public class User
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(256)]
         [EmailAddress]
@@ -12,5 +15,12 @@ namespace G_senger.Dtos
         [Required]
         [MaxLength(256)]
         public string Password { get; set; }
+
+        [MaxLength(256)]
+        public string FirstName { get; set; }
+
+        [MaxLength(256)]
+        public string LastName { get; set; }
+
     }
 }

@@ -22,24 +22,23 @@ namespace G_senger.Controllers
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        private readonly IServerRepository _repository;
+        private readonly IAuthRepository _repository;
         private readonly IMapper _mapper;
         private readonly JwtConfig _jwtConfig;
 
-        public AuthController(IServerRepository repository, IMapper mapper, IOptionsMonitor<JwtConfig> optionsMonitor)
+        public AuthController(IAuthRepository repository, IMapper mapper, IOptionsMonitor<JwtConfig> optionsMonitor)
         {
-            _repository = repository;
-            _mapper = mapper;
-            _jwtConfig = optionsMonitor.CurrentValue;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _jwtConfig = optionsMonitor.CurrentValue ?? throw new ArgumentNullException(nameof(optionsMonitor));
         }
 
-        // POST     api/Auth/Register
-        [HttpPost]
-        [Route("Register")]
+        // Register      POST     api/Auth/Register
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UserCreateDto userRegisterDto)
         {
             var userModel = _mapper.Map<User>(userRegisterDto);
-            if (_repository.CreateUser(userModel))
+            if (_repository.RegisterUser(userModel))
             {
                 await _repository.SaveChangesAsync();
 
@@ -50,9 +49,8 @@ namespace G_senger.Controllers
 
         }
 
-        // POST     api/Auth/Login
-        [HttpPost]
-        [Route("Login")]
+        // Login     POST     api/Auth/Login
+        [HttpPost("Login")]
         public IActionResult Login([FromBody] UserLoginDto userLoginDto)
         {
             var userModel = _mapper.Map<User>(userLoginDto);
@@ -105,9 +103,8 @@ namespace G_senger.Controllers
             return jwtToken;
         }
 
-        // Send email   GET api/Auth/Register/{email}
-        [HttpGet]
-        [Route("Register/{email}")]
+        // Send email   GET api/Auth/SendEmail/{email}
+        [HttpGet("SendEmail/{email}")]
         public async Task<IActionResult> SendMail(string email)
         {
             return Ok(await _repository.SendMail(email));

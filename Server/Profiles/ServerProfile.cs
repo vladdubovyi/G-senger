@@ -11,10 +11,15 @@ namespace G_senger.Profiles
             // source -> target
             CreateMap<User, UserCreateDto>();
             CreateMap<UserCreateDto, User>();
+
             CreateMap<UserReadDto, User>();
             CreateMap<User, UserReadDto>();
+
             CreateMap<UserLoginDto, User>();
             CreateMap<User, UserLoginDto>();
+
+            CreateMap<UserGetDto, User>();
+            CreateMap<User, UserGetDto>();
         }
     }
 }

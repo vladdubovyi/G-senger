@@ -91,7 +91,7 @@ namespace DesktopApp
             using (var client = new HttpClient())
             {
                 var response = await client.GetAsync(
-                    $"http://localhost:60208/api/Auth/Register/{email}");
+                    $"http://localhost:60208/api/Auth/SendEmail/{email}");
                 
                 return await response.Content.ReadAsStringAsync();
             }

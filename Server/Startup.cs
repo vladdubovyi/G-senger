@@ -41,6 +41,7 @@ namespace G_senger
             
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IServerRepository, ServerRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddDbContext<UsersContext>(opt => opt.UseSqlServer
                  (Configuration.GetConnectionString("ServerConnection")));
 
@@ -69,6 +70,9 @@ namespace G_senger
             services.AddDefaultIdentity<IdentityUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<UsersContext>();
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
+
+            // Setting up Email configuration
+            services.Configure<EmailConfig>(Configuration.GetSection("EmailConfig"));
 
             // Setting up Swagger
             services.AddSwaggerGen(c =>

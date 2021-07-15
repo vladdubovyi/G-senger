@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DesktopApp.Dtos;
+using DesktopApp.Dtos.Responses;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Http;
@@ -44,7 +47,7 @@ namespace DesktopApp
             var token = await TryLogin(textBoxEmail.Text, textBoxPass.Text);
 
             if (token != null) {
-                new mainForm(token).Show();
+                new mainForm(token, new User { Email = textBoxEmail.Text , Password = textBoxPass.Text }).Show();
                 this.Hide();
             }
             else
@@ -63,9 +66,13 @@ namespace DesktopApp
                 var response = await client.PostAsync(
                     "http://localhost:60208/api/Auth/Login",
                      new StringContent(JsonString, Encoding.UTF8, "application/json"));
-                if ( response.StatusCode == HttpStatusCode.OK )
+
+                var responseJsonString = await response.Content.ReadAsStringAsync();
+                var authResponse = JsonConvert.DeserializeObject<AuthResponse>(responseJsonString);
+
+                if ( authResponse.Success == true )
                 {
-                    return await response.Content.ReadAsStringAsync();
+                    return authResponse.Token;
                 }
 
                 return null;
