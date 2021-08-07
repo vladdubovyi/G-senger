@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace G_senger.Controllers
@@ -42,7 +43,7 @@ namespace G_senger.Controllers
 
         // User creation   POST api/Users
         [HttpPost]
-        public async Task<ActionResult<UserCreateDto>> CreateUser(UserCreateDto userCreateDto)
+        public async Task<ActionResult<UserCreateDto>> CreateUser([FromBody] UserCreateDto userCreateDto)
         {
             var userModel = _mapper.Map<User>(userCreateDto);
 
@@ -74,6 +75,27 @@ namespace G_senger.Controllers
             }
 
             return Ok(userGetDto);
+        }
+
+        // Getting list of contacts for centain user    GET     api/Users/GetContacts/{email}
+        [HttpGet("GetContacts/{email}")]
+        public async Task<IActionResult> GetContactsByEmail(string email)
+        {
+            var contacts = await _repository.GetContactsByEmailAsync(email);
+
+            var contactsGetDto = new List<UserGetDto>();
+
+            foreach(var user in contacts)
+            {
+                contactsGetDto.Add(_mapper.Map<UserGetDto>(user));
+            }
+
+            if(contactsGetDto.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(contactsGetDto);
         }
     }
 }

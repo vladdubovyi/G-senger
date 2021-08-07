@@ -73,18 +73,18 @@ namespace DesktopApp
             // 
             // textBoxEmail
             // 
-            this.textBoxEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxEmail.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxEmail.Location = new System.Drawing.Point(63, 77);
             this.textBoxEmail.Name = "textBoxEmail";
-            this.textBoxEmail.Size = new System.Drawing.Size(233, 26);
+            this.textBoxEmail.Size = new System.Drawing.Size(233, 27);
             this.textBoxEmail.TabIndex = 3;
             // 
             // textBoxPass
             // 
-            this.textBoxPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxPass.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxPass.Location = new System.Drawing.Point(62, 167);
             this.textBoxPass.Name = "textBoxPass";
-            this.textBoxPass.Size = new System.Drawing.Size(233, 26);
+            this.textBoxPass.Size = new System.Drawing.Size(233, 27);
             this.textBoxPass.TabIndex = 4;
             this.textBoxPass.UseSystemPasswordChar = true;
             // 

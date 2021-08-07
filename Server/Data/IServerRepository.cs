@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using G_senger.Models;
 
 namespace G_senger.Data
@@ -7,6 +8,7 @@ namespace G_senger.Data
     {
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByEmailAsync(string email);
+        Task<List<User>> GetContactsByEmailAsync(string email);
 
         bool CreateUser(User user);
 

@@ -1,7 +1,9 @@
 ﻿using G_senger.Contexts;
+using G_senger.Dtos;
 using G_senger.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -48,6 +50,13 @@ namespace G_senger.Data
             return (await _context.SaveChangesAsync() >= 0);
         }
 
+        public async Task<List<User>> GetContactsByEmailAsync(string email)
+        {
+            return await _context.Contacts
+                   .Where(c => c.User1.Email == email)
+                   .Select(c => c.User2)
+                   .ToListAsync();
+        }
         //public async Task UpdateUserAsync(User user)
         //{
         //    throw new NotImplementedException();

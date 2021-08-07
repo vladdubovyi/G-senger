@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DesktopApp.Dtos
 {
@@ -22,5 +23,18 @@ namespace DesktopApp.Dtos
         [MaxLength(256)]
         public string LastName { get; set; }
 
+        public override string ToString()
+        {
+            string res = String.Empty;
+            
+            if (!String.IsNullOrEmpty(FirstName))
+                res += FirstName + " ";
+            if (!String.IsNullOrEmpty(LastName))
+                res += LastName + " ";
+            if (!String.IsNullOrEmpty(Email) && String.IsNullOrEmpty(res))
+                res += Email + " ";
+
+            return res;
+        }
     }
 }
